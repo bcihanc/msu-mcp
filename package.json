@@ -1,0 +1,28 @@
+{
+  "name": "msu-mcp",
+  "version": "1.0.0",
+  "description": "MSU (MerchantSafe Unipay) MCP server for querying payment transactions",
+  "main": "src/index.js",
+  "type": "module",
+  "scripts": {
+    "start": "node src/index.js",
+    "dev": "node src/index.js"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.16.0"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "keywords": [
+    "mcp",
+    "model-context-protocol",
+    "msu", 
+    "merchantsafe",
+    "unipay",
+    "payment",
+    "transaction"
+  ],
+  "author": "Cihan",
+  "license": "MIT"
+}
