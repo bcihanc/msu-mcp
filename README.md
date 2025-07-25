@@ -31,12 +31,51 @@ npm install
 
 ## Configuration
 
+### Environment Variables
+
 Set the following environment variables:
 
 ```bash
 export MSU_MERCHANT="your_merchant_id"
 export MSU_MERCHANT_USER="your_merchant_user"
 export MSU_MERCHANT_PASSWORD="your_merchant_password"
+```
+
+### MCP Server Configuration
+
+To integrate with MCP-compatible applications (like Claude Desktop), add this to your MCP configuration:
+
+```json
+{
+  "mcpServers": {
+    "msu-mcp": {
+      "command": "node",
+      "args": ["/path/to/msu-mcp/src/index.js"],
+      "env": {
+        "MSU_MERCHANT": "your_merchant_id",
+        "MSU_MERCHANT_USER": "your_merchant_user",
+        "MSU_MERCHANT_PASSWORD": "your_merchant_password"
+      }
+    }
+  }
+}
+```
+
+Or using the global binary:
+
+```json
+{
+  "mcpServers": {
+    "msu-mcp": {
+      "command": "msu-mcp",
+      "env": {
+        "MSU_MERCHANT": "your_merchant_id",
+        "MSU_MERCHANT_USER": "your_merchant_user",
+        "MSU_MERCHANT_PASSWORD": "your_merchant_password"
+      }
+    }
+  }
+}
 ```
 
 ## Usage
