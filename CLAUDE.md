@@ -6,8 +6,11 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ### Running the Server
 ```bash
-npm start       # Start the MCP server
-npm run dev     # Start in development mode (same as start)
+npm start              # Start the MCP server
+npm run dev            # Start in development mode (same as start)
+npx .                  # Run via npx from project directory
+npx msu-mcp           # Run via npx (after publishing)
+./bin/msu-mcp.js      # Direct execution of binary
 ```
 
 ### Environment Setup
@@ -27,6 +30,11 @@ This is an **MCP (Model Context Protocol) Server** that provides payment transac
 - Single tool: `query_transaction` - queries payment transactions from MSU API
 - Handles MSU API authentication and form data submission
 - Enhances responses with human-readable error code explanations
+
+**CLI Binary (`bin/msu-mcp.js`):**
+- Executable entry point for running the MCP server
+- Imports and executes the main server module
+- Allows installation as a global CLI tool
 
 **Error Code Mapping (`src/error-codes.js`):**
 - Complete mapping of MSU error codes (ERR10010-ERR30005) to Turkish descriptions
@@ -67,3 +75,32 @@ Supports filtering by:
 - All API communication uses form-encoded data, not JSON
 - Error codes are automatically enhanced in responses for better debugging
 - Requires Node.js >=18.0.0
+- Package includes CLI binary for global installation
+- Uses ES modules (type: "module" in package.json)
+
+## Installation & Usage
+
+### Local Development
+```bash
+npm install
+npm start
+```
+
+### NPX Usage
+```bash
+npx .                  # Run from project directory
+npx msu-mcp           # Run published package
+```
+
+### Global Installation
+```bash
+npm install -g .
+msu-mcp
+```
+
+### Package Information
+- **Name**: msu-mcp
+- **Version**: 1.0.0
+- **License**: MIT
+- **Main Entry**: src/index.js
+- **Binary**: bin/msu-mcp.js
