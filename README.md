@@ -5,23 +5,10 @@ An MCP (Model Context Protocol) server for querying payment transactions from th
 ## ✨ Features
 
 - 🔍 Query payment transactions with comprehensive filtering options
+- 👤 Query customer details and information
 - 🌐 Automatic error code translation to human-readable Turkish descriptions  
 - 🤖 MCP protocol integration for AI model context
 - ⚡ CLI tool for easy deployment
-
-## 📦 Installation
-
-### 🚀 NPX Usage (Recommended)
-```bash
-# Directly from GitHub
-npx github:bcihanc/msu-mcp
-```
-
-### 🌍 Global Installation
-```bash
-# Directly from GitHub
-npm install -g github:bcihanc/msu-mcp
-```
 
 ## ⚙️ Configuration
 
@@ -43,18 +30,21 @@ To integrate with MCP-compatible applications (like Claude Desktop), add this to
 {
   "mcpServers": {
     "msu-mcp": {
-      "command": "msu-mcp",
+      "command": "npx",
+      "args": ["-y", "github:bcihanc/msu-mcp"],
       "env": {
-        "MSU_MERCHANT": "your_merchant_id",
-        "MSU_MERCHANT_USER": "your_merchant_user",
-        "MSU_MERCHANT_PASSWORD": "your_merchant_password"
+        "MSU_MERCHANT": "your-merchant-id",
+        "MSU_MERCHANT_USER": "your-user",
+        "MSU_MERCHANT_PASSWORD": "your-password"
       }
     }
   }
 }
 ```
 
-## 🔍 Transaction Query Parameters
+## 🔍 Available Tools
+
+### Transaction Query Tool
 
 The `query_transaction` tool supports filtering by:
 
@@ -64,6 +54,15 @@ The `query_transaction` tool supports filtering by:
 - 👤 **Customer Details** (name, email, phone, system ID)
 - 📊 **Transaction Status**
 - 📄 **Pagination** (offset, limit - default 1000)
+
+### Customer Query Tool
+
+The `query_customer` tool supports querying by:
+
+- 🆔 **Customer System ID** (`customer`) - Unique merchant system ID (max 128 chars)
+- 👤 **Customer Name** (`customer_name`) - Name of the customer (max 128 chars)
+- 📧 **Customer Email** (`customer_email`) - Customer email address (max 64 chars)
+- 📱 **Customer Phone** (`customer_phone`) - Customer phone/mobile number (max 64 chars)
 
 ## 🔧 Error Code Enhancement
 
