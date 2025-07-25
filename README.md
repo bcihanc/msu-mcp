@@ -1,37 +1,31 @@
-# MSU MCP Server
+# 💳 MSU MCP Server
 
 An MCP (Model Context Protocol) server for querying payment transactions from the MSU (MerchantSafe Unipay) payment gateway.
 
-## Features
+## ✨ Features
 
-- Query payment transactions with comprehensive filtering options
-- Automatic error code translation to human-readable Turkish descriptions  
-- MCP protocol integration for AI model context
-- CLI tool for easy deployment
+- 🔍 Query payment transactions with comprehensive filtering options
+- 🌐 Automatic error code translation to human-readable Turkish descriptions  
+- 🤖 MCP protocol integration for AI model context
+- ⚡ CLI tool for easy deployment
 
-## Installation
+## 📦 Installation
 
-### NPX Usage (Recommended)
+### 🚀 NPX Usage (Recommended)
 ```bash
-npx msu-mcp           # Run published package
-npx .                 # Run from project directory
+# Directly from GitHub
+npx github:bcihanc/msu-mcp
 ```
 
-### Global Installation
+### 🌍 Global Installation
 ```bash
-npm install -g msu-mcp
+# Directly from GitHub
+npm install -g github:bcihanc/msu-mcp
 ```
 
-### Local Development
-```bash
-git clone <repository-url>
-cd msu-mcp
-npm install
-```
+## ⚙️ Configuration
 
-## Configuration
-
-### Environment Variables
+### 🔐 Environment Variables
 
 Set the following environment variables:
 
@@ -41,27 +35,9 @@ export MSU_MERCHANT_USER="your_merchant_user"
 export MSU_MERCHANT_PASSWORD="your_merchant_password"
 ```
 
-### MCP Server Configuration
+### 🔧 MCP Server Configuration
 
 To integrate with MCP-compatible applications (like Claude Desktop), add this to your MCP configuration:
-
-```json
-{
-  "mcpServers": {
-    "msu-mcp": {
-      "command": "node",
-      "args": ["/path/to/msu-mcp/src/index.js"],
-      "env": {
-        "MSU_MERCHANT": "your_merchant_id",
-        "MSU_MERCHANT_USER": "your_merchant_user",
-        "MSU_MERCHANT_PASSWORD": "your_merchant_password"
-      }
-    }
-  }
-}
-```
-
-Or using the global binary:
 
 ```json
 {
@@ -78,78 +54,57 @@ Or using the global binary:
 }
 ```
 
-## Usage
-
-### As MCP Server
-```bash
-# Global installation
-msu-mcp
-
-# Local development
-npm start
-```
-
-### As CLI Tool
-```bash
-# Via NPX (recommended)
-npx msu-mcp           # Published package
-npx .                 # From project directory
-
-# Direct execution
-./bin/msu-mcp.js
-```
-
-## Transaction Query Parameters
+## 🔍 Transaction Query Parameters
 
 The `query_transaction` tool supports filtering by:
 
-- **Transaction ID** (`pgtranid`)
-- **Date Range** (`start_date`, `end_date` in dd-MM-yyyy HH:mm format)
-- **Merchant Payment ID** (`merchant_payment_id`)
-- **Customer Details** (name, email, phone, system ID)
-- **Transaction Status**
-- **Pagination** (offset, limit - default 1000)
+- 🆔 **Transaction ID** (`pgtranid`)
+- 📅 **Date Range** (`start_date`, `end_date` in dd-MM-yyyy HH:mm format)
+- 💼 **Merchant Payment ID** (`merchant_payment_id`)
+- 👤 **Customer Details** (name, email, phone, system ID)
+- 📊 **Transaction Status**
+- 📄 **Pagination** (offset, limit - default 1000)
 
-## Error Code Enhancement
+## 🔧 Error Code Enhancement
 
 The server automatically enhances MSU API responses by:
-- Detecting error codes in ERR##### format
-- Adding Turkish explanations for better debugging
-- Preserving original response structure
+- 🔍 Detecting error codes in ERR##### format
+- 🌐 Adding Turkish explanations for better debugging
+- 🔄 Preserving original response structure
 
-## Technical Details
+## 🛠️ Technical Details
 
-- **Node.js**: >=18.0.0 required
-- **Protocol**: MCP (Model Context Protocol)
-- **API**: MSU MerchantSafe Unipay v2
-- **Data Format**: Form-encoded requests, JSON responses
-- **Transport**: stdio
+- 🟢 **Node.js**: >=18.0.0 required
+- 🔗 **Protocol**: MCP (Model Context Protocol)
+- 🔌 **API**: MSU MerchantSafe Unipay v2
+- 📝 **Data Format**: Form-encoded requests, JSON responses
+- 🚀 **Transport**: stdio
 
-## API Integration
+## 🌐 API Integration
 
-- **Base URL**: `https://merchantsafeunipay.com/msu/api/v2`
-- **Action**: `QUERYTRANSACTION`
-- **Authentication**: Merchant credentials via form data
-- **Error Codes**: ERR10010-ERR30005 with Turkish descriptions
+- 🔗 **Base URL**: `https://merchantsafeunipay.com/msu/api/v2`
+- ⚡ **Action**: `QUERYTRANSACTION`
+- 🔐 **Authentication**: Merchant credentials via form data
+- 🚨 **Error Codes**: ERR10010-ERR30005 with Turkish descriptions
 
-## Project Structure
+## 📁 Project Structure
 
 ```
 msu-mcp/
 ├── bin/
-│   └── msu-mcp.js          # CLI executable
+│   └── msu-mcp.js          # 🚀 CLI executable
 ├── src/
-│   ├── index.js            # Main MCP server
-│   └── error-codes.js      # Error code mappings
+│   ├── index.js            # 🖥️ Main MCP server
+│   └── error-codes.js      # 🔧 Error code mappings
 ├── package.json
-├── CLAUDE.md              # Development guidance
+├── CLAUDE.md              # 📖 Development guidance
 └── README.md
 ```
 
-## License
+## 📄 License
 
 MIT
 
-## Author
+## 👨‍💻 Author
 
 Cihan
