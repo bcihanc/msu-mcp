@@ -4,6 +4,9 @@
   "description": "MSU (MerchantSafe Unipay) MCP server for querying payment transactions",
   "main": "src/index.js",
   "type": "module",
+  "bin": {
+    "msu-mcp": "bin/msu-mcp.js"
+  },
   "scripts": {
     "start": "node src/index.js",
     "dev": "node src/index.js"

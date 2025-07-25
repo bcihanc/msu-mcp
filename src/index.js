@@ -106,11 +106,42 @@ server.setRequestHandler(ListToolsRequestSchema, async () => ({
             required: [],
             additionalProperties: false
         }
+    },
+    {
+        name: "query_customer",
+        description: "Query customer details from MSU (MerchantSafe Unipay) payment gateway. Returns all information related to the customer specified by CUSTOMER parameter sent in request.",
+        inputSchema: {
+            type: "object",
+            properties: {
+                customer: {
+                    type: "string",
+                    description: "The Merchant System ID for customer. It must be unique within a Merchant (max length: 128)",
+                    maxLength: 128
+                },
+                customer_name: {
+                    type: "string",
+                    description: "Name of the Customer (max length: 128)",
+                    maxLength: 128
+                },
+                customer_email: {
+                    type: "string",
+                    description: "Customer e-mail (max length: 64)",
+                    maxLength: 64
+                },
+                customer_phone: {
+                    type: "string",
+                    description: "Customer phone / mobile number (max length: 64)",
+                    maxLength: 64
+                }
+            },
+            required: [],
+            additionalProperties: false
+        }
     }]
 }));
 
 server.setRequestHandler(CallToolRequestSchema, async (request) => {
-    if (request.params.name !== "query_transaction") {
+    if (request.params.name !== "query_transaction" && request.params.name !== "query_customer") {
         throw new Error(`Unknown tool: ${request.params.name}`);
     }
 
@@ -125,59 +156,64 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
     formData.append('MERCHANTUSER', MSU_MERCHANT_USER);
     formData.append('MERCHANTPASSWORD', MSU_MERCHANT_PASSWORD);
 
-    // Add action parameter
-    formData.append('ACTION', 'QUERYTRANSACTION');
+    if (request.params.name === "query_transaction") {
+        // Add action parameter for transaction query
+        formData.append('ACTION', 'QUERYTRANSACTION');
 
-    // Add transaction identifier if provided
-    if (args.pgtranid) {
-        formData.append('PGTRANID', args.pgtranid);
+        // Add transaction identifier if provided
+        if (args.pgtranid) {
+            formData.append('PGTRANID', args.pgtranid);
+        }
+
+        // Add optional date filters
+        if (args.start_date) {
+            formData.append('STARTDATE', args.start_date);
+        }
+        if (args.end_date) {
+            formData.append('ENDDATE', args.end_date);
+        }
+
+        // Add limit parameter with default value
+        const limit = args.limit || '1000';
+        formData.append('LIMIT', limit);
+
+        // Add merchant payment ID if provided
+        if (args.merchant_payment_id) {
+            formData.append('MERCHANTPAYMENTID', args.merchant_payment_id);
+        }
+
+        // Add transaction status parameter if provided
+        if (args.transaction_status) {
+            formData.append('TRANSACTIONSTATUS', args.transaction_status);
+        }
+
+        // Add offset parameter if provided
+        if (args.offset) {
+            formData.append('OFFSET', args.offset);
+        }
+    } else if (request.params.name === "query_customer") {
+        // Add action parameter for customer query
+        formData.append('ACTION', 'QUERYCUSTOMER');
     }
 
-    // Add optional date filters
-    if (args.start_date) {
-        formData.append('STARTDATE', args.start_date);
-    }
-    if (args.end_date) {
-        formData.append('ENDDATE', args.end_date);
-    }
-
-    // Add limit parameter with default value
-    const limit = args.limit || '1000';
-    formData.append('LIMIT', limit);
-
-    // Add merchant payment ID if provided
-    if (args.merchant_payment_id) {
-        formData.append('MERCHANTPAYMENTID', args.merchant_payment_id);
-    }
-
-    // Add customer parameter if provided
+    // Add customer parameter if provided (used by both tools)
     if (args.customer) {
         formData.append('CUSTOMER', args.customer);
     }
 
-    // Add customer email parameter if provided
+    // Add customer email parameter if provided (used by both tools)
     if (args.customer_email) {
         formData.append('CUSTOMEREMAIL', args.customer_email);
     }
 
-    // Add customer name parameter if provided
+    // Add customer name parameter if provided (used by both tools)
     if (args.customer_name) {
         formData.append('CUSTOMERNAME', args.customer_name);
     }
 
-    // Add customer phone parameter if provided
+    // Add customer phone parameter if provided (used by both tools)
     if (args.customer_phone) {
         formData.append('CUSTOMERPHONE', args.customer_phone);
-    }
-
-    // Add transaction status parameter if provided
-    if (args.transaction_status) {
-        formData.append('TRANSACTIONSTATUS', args.transaction_status);
-    }
-
-    // Add offset parameter if provided
-    if (args.offset) {
-        formData.append('OFFSET', args.offset);
     }
 
     try {
