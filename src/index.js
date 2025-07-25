@@ -99,7 +99,7 @@ server.setRequestHandler(ListToolsRequestSchema, async () => ({
                 },
                 transaction_status: {
                     type: "string",
-                    description: "Transaction status (max length: 18)",
+                    description: "Transaction status (max length: 2). Valid values: 'IP' (İşleniyor/Processing), 'CA' (Vazgeçildi/Abandoned), 'FA' (Başarısız/Failed), 'AP' (Onaylandı/Approved), 'VD' (İptal Edildi/Voided), 'MR' (Kontrol Gerekli/Manual Review), 'PA' (Kapatıldı/Partial Approval), 'WFA' (İlk Onay Bekleniyor/Waiting First Approval), 'WLA' (Son Onay Bekleniyor/Waiting Last Approval), 'RJ' (Reddedildi/Rejected), 'AVD' (Otomatik İptal/Auto Voided), 'ARND' (Otomatik İade/Auto Refunded), 'AFA' (Otomatik Başarısız/Auto Failed)",
                     maxLength: 18
                 }
             },
