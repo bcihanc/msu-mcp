@@ -47,10 +47,18 @@ function enhanceResponseWithErrorCodes(data) {
             });
 
             // Ensure every transaction has all fields (add missing fields as empty string)
+            // Normalize nested objects to strings for uniform type
             enhanced[transactionArrayKey] = enhanced[transactionArrayKey].map(txn => {
                 const normalized = {};
                 allFields.forEach(field => {
-                    normalized[field] = txn[field] !== undefined ? txn[field] : '';
+                    let value = txn[field] !== undefined ? txn[field] : '';
+
+                    // Convert nested objects to JSON strings for type uniformity
+                    if (value !== '' && typeof value === 'object' && value !== null) {
+                        value = JSON.stringify(value);
+                    }
+
+                    normalized[field] = value;
                 });
                 return normalized;
             });
