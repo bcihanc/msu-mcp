@@ -35,15 +35,19 @@ function enhanceResponseWithErrorCodes(data) {
         collectErrorCodes(enhanced);
 
         // Normalize transactions array for uniform structure (enables CSV-style TOON)
-        if (enhanced.transactions && Array.isArray(enhanced.transactions)) {
+        // Support both 'transactions' and 'transactionList' field names
+        const transactionArrayKey = enhanced.transactions ? 'transactions' :
+                                     enhanced.transactionList ? 'transactionList' : null;
+
+        if (transactionArrayKey && Array.isArray(enhanced[transactionArrayKey])) {
             // Collect all unique fields across all transactions
             const allFields = new Set();
-            enhanced.transactions.forEach(txn => {
+            enhanced[transactionArrayKey].forEach(txn => {
                 Object.keys(txn).forEach(field => allFields.add(field));
             });
 
             // Ensure every transaction has all fields (add missing fields as empty string)
-            enhanced.transactions = enhanced.transactions.map(txn => {
+            enhanced[transactionArrayKey] = enhanced[transactionArrayKey].map(txn => {
                 const normalized = {};
                 allFields.forEach(field => {
                     normalized[field] = txn[field] !== undefined ? txn[field] : '';
