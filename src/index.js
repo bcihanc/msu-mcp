@@ -12,26 +12,60 @@ const MSU_MERCHANT_USER = process.env.MSU_MERCHANT_USER;
 const MSU_MERCHANT_PASSWORD = process.env.MSU_MERCHANT_PASSWORD;
 
 // Function to enhance response with error code explanations
+// Returns response with separate error_explanations map for uniform array structure
 function enhanceResponseWithErrorCodes(data) {
     if (typeof data === 'object' && data !== null) {
-        const enhanced = { ...data };
+        const errorCodesFound = new Set();
+        const enhanced = JSON.parse(JSON.stringify(data)); // Deep clone
 
-        // Look for error codes in the response
-        const findAndExplainErrors = (obj, path = '') => {
-            for (const [key, value] of Object.entries(obj)) {
+        // Collect all unique error codes in the response
+        const collectErrorCodes = (obj) => {
+            for (const value of Object.values(obj)) {
                 if (typeof value === 'string' && value.startsWith('ERR')) {
                     const errorCode = value.match(/ERR\d{5}/)?.[0];
                     if (errorCode && MSU_ERROR_CODES[errorCode]) {
-                        const newKey = key + '_explanation';
-                        obj[newKey] = `${errorCode}: ${MSU_ERROR_CODES[errorCode]}`;
+                        errorCodesFound.add(errorCode);
                     }
                 } else if (typeof value === 'object' && value !== null) {
-                    findAndExplainErrors(value, path ? `${path}.${key}` : key);
+                    collectErrorCodes(value);
                 }
             }
         };
 
-        findAndExplainErrors(enhanced);
+        collectErrorCodes(enhanced);
+
+        // Normalize transactions array for uniform structure (enables CSV-style TOON)
+        if (enhanced.transactions && Array.isArray(enhanced.transactions)) {
+            // Collect all unique fields across all transactions
+            const allFields = new Set();
+            enhanced.transactions.forEach(txn => {
+                Object.keys(txn).forEach(field => allFields.add(field));
+            });
+
+            // Ensure every transaction has all fields (add missing fields as empty string)
+            enhanced.transactions = enhanced.transactions.map(txn => {
+                const normalized = {};
+                allFields.forEach(field => {
+                    normalized[field] = txn[field] !== undefined ? txn[field] : '';
+                });
+                return normalized;
+            });
+        }
+
+        // Build error_explanations map if any error codes found
+        if (errorCodesFound.size > 0) {
+            const error_explanations = {};
+            for (const code of errorCodesFound) {
+                error_explanations[code] = MSU_ERROR_CODES[code];
+            }
+
+            // Return response with error_explanations at root level
+            return {
+                ...enhanced,
+                error_explanations
+            };
+        }
+
         return enhanced;
     }
     return data;

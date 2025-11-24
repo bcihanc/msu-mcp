@@ -79,16 +79,19 @@ All responses are returned in **TOON (Token-Oriented Object Notation)** format f
 **Example Response:**
 ```toon
 status: success
-error_code: ERR10010
-error_code_explanation: "ERR10010: Geçersiz işlem kimliği"
-transactions[2]{id,amount,currency,status}:
-  TX001,150.50,TRY,approved
-  TX002,299.99,USD,pending
+merchant: TEST_MERCHANT
+total_count: 2
+transactions[2]{pgtranid,merchant_payment_id,amount,currency,status,customer_name,error_code}:
+  PG123456789,ORDER_001,"150.50",TRY,AP,Ahmet Yılmaz,""
+  PG987654321,ORDER_002,"299.99",USD,FA,Mehmet Demir,ERR10010
+error_explanations:
+  ERR10010: "İstekte zorunlu parametrelerden biri bulunamadı"
 ```
 
 **Benefits:**
-- 📉 ~40% fewer tokens compared to JSON
-- 🎯 Clear array structure with explicit field headers
+- 📉 **~50% fewer tokens** compared to JSON (optimized CSV-style format)
+- 🎯 **CSV-style arrays** - Field names declared once, then only values
+- 📋 **Separate error map** - Error explanations at root level, not inline
 - 🔍 Human-readable while optimized for LLMs
 - 🔄 Lossless round-trip conversion to/from JSON
 

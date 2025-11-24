@@ -64,9 +64,10 @@ The `enhanceResponseWithErrorCodes()` function automatically:
 All tool responses are encoded in TOON (Token-Oriented Object Notation) format:
 - Uses `@toon-format/toon` library for encoding
 - Comma delimiter (default) for array values
-- ~40% fewer tokens compared to JSON
-- Maintains full data structure with clear array headers
-- Example: `transactions[2]{id,amount}:\n  TX1,100.50\n  TX2,200.99`
+- **~50% fewer tokens** compared to JSON (CSV-style format)
+- **Transactions normalized** for uniform structure → enables CSV-style TOON
+- **Error explanations** stored in separate root-level map (not inline)
+- Example: `transactions[3]{pgtranid,amount,error_code}:\n  PG1,100.50,""\n  PG2,200.99,ERR10010\nerror_explanations:\n  ERR10010: "Description..."`
 
 ### Transaction Query Parameters
 Supports filtering by:
