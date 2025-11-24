@@ -12,7 +12,8 @@
     "dev": "node src/index.js"
   },
   "dependencies": {
-    "@modelcontextprotocol/sdk": "^1.16.0"
+    "@modelcontextprotocol/sdk": "^1.16.0",
+    "@toon-format/toon": "^1.4.0"
   },
   "engines": {
     "node": ">=18.0.0"
@@ -20,7 +21,7 @@
   "keywords": [
     "mcp",
     "model-context-protocol",
-    "msu", 
+    "msu",
     "merchantsafe",
     "unipay",
     "payment",

@@ -6,7 +6,8 @@ An MCP (Model Context Protocol) server for querying payment transactions from th
 
 - 🔍 Query payment transactions with comprehensive filtering options
 - 👤 Query customer details and information
-- 🌐 Automatic error code translation to human-readable Turkish descriptions  
+- 🌐 Automatic error code translation to human-readable Turkish descriptions
+- 📊 **TOON format responses** - Token-efficient data encoding for LLMs (~40% fewer tokens than JSON)
 - 🤖 MCP protocol integration for AI model context
 - ⚡ CLI tool for easy deployment
 
@@ -71,12 +72,35 @@ The server automatically enhances MSU API responses by:
 - 🌐 Adding Turkish explanations for better debugging
 - 🔄 Preserving original response structure
 
+## 📊 TOON Format Response
+
+All responses are returned in **TOON (Token-Oriented Object Notation)** format for optimal token efficiency when working with LLMs.
+
+**Example Response:**
+```toon
+status: success
+error_code: ERR10010
+error_code_explanation: "ERR10010: Geçersiz işlem kimliği"
+transactions[2]{id,amount,currency,status}:
+  TX001,150.50,TRY,approved
+  TX002,299.99,USD,pending
+```
+
+**Benefits:**
+- 📉 ~40% fewer tokens compared to JSON
+- 🎯 Clear array structure with explicit field headers
+- 🔍 Human-readable while optimized for LLMs
+- 🔄 Lossless round-trip conversion to/from JSON
+
+**Learn more:** https://github.com/toon-format/toon
+
 ## 🛠️ Technical Details
 
 - 🟢 **Node.js**: >=18.0.0 required
 - 🔗 **Protocol**: MCP (Model Context Protocol)
 - 🔌 **API**: MSU MerchantSafe Unipay v2
-- 📝 **Data Format**: Form-encoded requests, JSON responses
+- 📝 **Data Format**: Form-encoded requests, TOON format responses
+- 📊 **Response Encoding**: TOON (Token-Oriented Object Notation) with comma delimiter
 - 🚀 **Transport**: stdio
 
 ## 🌐 API Integration

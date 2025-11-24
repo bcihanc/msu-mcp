@@ -4,6 +4,7 @@ import {Server} from "@modelcontextprotocol/sdk/server/index.js";
 import {StdioServerTransport} from "@modelcontextprotocol/sdk/server/stdio.js";
 import {CallToolRequestSchema, ListToolsRequestSchema} from "@modelcontextprotocol/sdk/types.js";
 import {MSU_ERROR_CODES} from "./error-codes.js";
+import {encode} from "@toon-format/toon";
 
 const MSU_API_BASE_URL = "https://merchantsafeunipay.com/msu/api/v2";
 const MSU_MERCHANT = process.env.MSU_MERCHANT;
@@ -238,7 +239,7 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
         return {
             content: [{
                 type: "text",
-                text: JSON.stringify(enhancedData, null, 2)
+                text: encode(enhancedData)
             }]
         };
 

@@ -27,9 +27,10 @@ This is an **MCP (Model Context Protocol) Server** that provides payment transac
 
 **Main Server (`src/index.js`):**
 - Implements MCP server using `@modelcontextprotocol/sdk`
-- Single tool: `query_transaction` - queries payment transactions from MSU API
+- Two tools: `query_transaction` and `query_customer` for querying payment data
 - Handles MSU API authentication and form data submission
 - Enhances responses with human-readable error code explanations
+- Encodes responses in TOON (Token-Oriented Object Notation) format for token efficiency
 
 **CLI Binary (`bin/msu-mcp.js`):**
 - Executable entry point for running the MCP server
@@ -59,6 +60,14 @@ The `enhanceResponseWithErrorCodes()` function automatically:
 - Adds explanatory fields with human-readable descriptions
 - Preserves original response structure while adding context
 
+**Response Format (TOON):**
+All tool responses are encoded in TOON (Token-Oriented Object Notation) format:
+- Uses `@toon-format/toon` library for encoding
+- Comma delimiter (default) for array values
+- ~40% fewer tokens compared to JSON
+- Maintains full data structure with clear array headers
+- Example: `transactions[2]{id,amount}:\n  TX1,100.50\n  TX2,200.99`
+
 ### Transaction Query Parameters
 Supports filtering by:
 - Transaction ID (`pgtranid`)
@@ -73,6 +82,7 @@ Supports filtering by:
 - No test framework configured
 - No build process required (plain Node.js ES modules)
 - All API communication uses form-encoded data, not JSON
+- **Responses are encoded in TOON format** (not JSON) for optimal token efficiency
 - Error codes are automatically enhanced in responses for better debugging
 - Requires Node.js >=18.0.0
 - Package includes CLI binary for global installation
@@ -104,3 +114,6 @@ msu-mcp
 - **License**: MIT
 - **Main Entry**: src/index.js
 - **Binary**: bin/msu-mcp.js
+- **Dependencies**:
+  - `@modelcontextprotocol/sdk`: ^1.16.0
+  - `@toon-format/toon`: ^1.4.0
