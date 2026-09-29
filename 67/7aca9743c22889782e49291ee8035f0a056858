@@ -1,0 +1,19 @@
+src/index.js
+  s_272baa2371a36b::t_d1f5624fa392e1 9-11
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "677aca9743c22889782e49291ee8035f0a056858",
+  "prompts": {},
+  "sessions": {
+    "s_272baa2371a36b": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "66bb3ce4-ad4c-4f75-9a3b-7e8a18932baf",
+        "model": "claude-opus-4-8"
+      },
+      "human_author": "cihan <b.cihancengiz@gmail.com>"
+    }
+  }
+}
