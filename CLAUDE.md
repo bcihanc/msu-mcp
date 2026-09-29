@@ -9,7 +9,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 npm start              # Start the MCP server
 npm run dev            # Start in development mode (same as start)
 npx .                  # Run via npx from project directory
-npx msu-mcp           # Run via npx (after publishing)
+npx -y github:bcihanc/msu-mcp  # Run from GitHub (not published on npm)
 ./bin/msu-mcp.js      # Direct execution of binary
 ```
 
@@ -18,6 +18,9 @@ The server requires these environment variables:
 - `MSU_MERCHANT` - Merchant identifier
 - `MSU_MERCHANT_USER` - Merchant user for API authentication
 - `MSU_MERCHANT_PASSWORD` - Merchant password for API authentication
+
+Optional:
+- `MSU_ENV` - `test` targets the MSU test endpoint; any other value or unset targets production
 
 ## Architecture Overview
 
@@ -49,7 +52,7 @@ This is an **MCP (Model Context Protocol) Server** that provides payment transac
 - Single capability: tools
 
 **MSU API Integration:**
-- Base URL: `https://merchantsafeunipay.com/msu/api/v2`
+- Base URL: `https://merchantsafeunipay.com/msu/api/v2`; with `MSU_ENV=test` it is `https://test.merchantsafeunipay.com/msu/api/v2`
 - Uses form-encoded POST requests with merchant credentials
 - ACTION parameters: `QUERYTRANSACTION`, `QUERYCUSTOMER`, `QUERYCARD`, `QUERYCARDDETAILS`, `QUERYSESSION`
 - Supports comprehensive filtering (date ranges, customer info, transaction status, card tokens, session tokens, etc.)
@@ -124,7 +127,7 @@ npm start
 ### NPX Usage
 ```bash
 npx .                  # Run from project directory
-npx msu-mcp           # Run published package
+npx -y github:bcihanc/msu-mcp  # Run from GitHub (not published on npm)
 ```
 
 ### Global Installation
