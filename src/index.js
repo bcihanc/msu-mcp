@@ -6,7 +6,9 @@ import {CallToolRequestSchema, ListToolsRequestSchema} from "@modelcontextprotoc
 import {MSU_ERROR_CODES} from "./error-codes.js";
 import {encode} from "@toon-format/toon";
 
-const MSU_API_BASE_URL = "https://merchantsafeunipay.com/msu/api/v2";
+const MSU_API_BASE_URL = process.env.MSU_ENV === "test"
+    ? "https://test.merchantsafeunipay.com/msu/api/v2"
+    : "https://merchantsafeunipay.com/msu/api/v2";
 const MSU_MERCHANT = process.env.MSU_MERCHANT;
 const MSU_MERCHANT_USER = process.env.MSU_MERCHANT_USER;
 const MSU_MERCHANT_PASSWORD = process.env.MSU_MERCHANT_PASSWORD;
