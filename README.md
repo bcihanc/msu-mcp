@@ -6,6 +6,7 @@ An MCP (Model Context Protocol) server for querying payment transactions from th
 
 - 🔍 Query payment transactions with comprehensive filtering options
 - 👤 Query customer details and information
+- 💳 Query saved card tokens and card details
 - 🌐 Automatic error code translation to human-readable Turkish descriptions
 - 📊 **TOON format responses** - Token-efficient data encoding for LLMs (~40% fewer tokens than JSON)
 - 🤖 MCP protocol integration for AI model context
@@ -65,6 +66,40 @@ The `query_customer` tool supports querying by:
 - 📧 **Customer Email** (`customer_email`) - Customer email address (max 64 chars)
 - 📱 **Customer Phone** (`customer_phone`) - Customer phone/mobile number (max 64 chars)
 
+### Card Query Tool
+
+The `query_card` tool supports querying by:
+
+- 🔑 **Card Token** (`cardtoken`) - Unique token replacing card number & expiry (max 64 chars)
+- 📝 **Card Save Name** (`cardsavename`) - Given name for the saved card (max 255 chars)
+- 🆔 **Customer System ID** (`customer`) - Unique merchant system ID (max 128 chars)
+- 👥 **Card Sharing Group** (`forgroup`) - Query cards from merchant group (default: 'no', max 3 chars)
+- 📅 **Date Range** (`start_date`, `end_date` in dd-MM-yyyy HH:mm format)
+- 🏪 **Dealer Code** (`dealercode`) - The dealer code (max 32 chars)
+- 🔐 **Encrypted PAN** (`encryptedpan`) - Encrypted card number (max 1024 chars)
+- 📄 **Pagination** (offset, limit - default 1000)
+
+Returns card information including brand, type, last 4 digits, expiry date, issuer details, and token.
+
+### Card Details Query Tool
+
+The `query_card_details` tool queries cards saved with a specific session token:
+
+- 🎫 **Session Token** (`sessiontoken`) - **Required**. Unique session token (max 48 chars)
+
+Returns card count (cardCount, totalCardCount) and detailed card list with same information as query_card tool.
+
+### Session Query Tool
+
+The `query_session` tool retrieves session information:
+
+- 🎫 **Session Token** (`sessiontoken`) - **Required**. Unique session token (max 48 chars)
+
+Returns comprehensive session details including:
+- 📋 **Session**: Status, amounts, currency, timestamps, API action, merchant payment ID
+- 🏢 **Merchant**: Business ID, name, address, contact info, web address, wallet model
+- 👤 **Customer**: ID, email, phone, name, last login timestamp
+
 ## 🔧 Error Code Enhancement
 
 The server automatically enhances MSU API responses by:
@@ -109,7 +144,7 @@ error_explanations:
 ## 🌐 API Integration
 
 - 🔗 **Base URL**: `https://merchantsafeunipay.com/msu/api/v2`
-- ⚡ **Action**: `QUERYTRANSACTION`
+- ⚡ **Actions**: `QUERYTRANSACTION`, `QUERYCUSTOMER`, `QUERYCARD`, `QUERYCARDDETAILS`, `QUERYSESSION`
 - 🔐 **Authentication**: Merchant credentials via form data
 - 🚨 **Error Codes**: ERR10010-ERR30005 with Turkish descriptions
 

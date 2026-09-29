@@ -27,7 +27,7 @@ This is an **MCP (Model Context Protocol) Server** that provides payment transac
 
 **Main Server (`src/index.js`):**
 - Implements MCP server using `@modelcontextprotocol/sdk`
-- Two tools: `query_transaction` and `query_customer` for querying payment data
+- Five tools: `query_transaction`, `query_customer`, `query_card`, `query_card_details`, and `query_session` for querying payment data
 - Handles MSU API authentication and form data submission
 - Enhances responses with human-readable error code explanations
 - Encodes responses in TOON (Token-Oriented Object Notation) format for token efficiency
@@ -51,8 +51,8 @@ This is an **MCP (Model Context Protocol) Server** that provides payment transac
 **MSU API Integration:**
 - Base URL: `https://merchantsafeunipay.com/msu/api/v2`
 - Uses form-encoded POST requests with merchant credentials
-- ACTION parameter: `QUERYTRANSACTION`
-- Supports comprehensive transaction filtering (date ranges, customer info, transaction status, etc.)
+- ACTION parameters: `QUERYTRANSACTION`, `QUERYCUSTOMER`, `QUERYCARD`, `QUERYCARDDETAILS`, `QUERYSESSION`
+- Supports comprehensive filtering (date ranges, customer info, transaction status, card tokens, session tokens, etc.)
 
 **Error Enhancement:**
 The `enhanceResponseWithErrorCodes()` function automatically:
@@ -65,7 +65,7 @@ All tool responses are encoded in TOON (Token-Oriented Object Notation) format:
 - Uses `@toon-format/toon` library for encoding
 - Comma delimiter (default) for array values
 - **~50% fewer tokens** compared to JSON (CSV-style format)
-- **Transactions normalized** for uniform structure → enables CSV-style TOON
+- **Transactions and cards normalized** for uniform structure → enables CSV-style TOON
 - **Error explanations** stored in separate root-level map (not inline)
 - Example: `transactions[3]{pgtranid,amount,error_code}:\n  PG1,100.50,""\n  PG2,200.99,ERR10010\nerror_explanations:\n  ERR10010: "Description..."`
 
@@ -77,6 +77,30 @@ Supports filtering by:
 - Customer details (name, email, phone, system ID)
 - Transaction status
 - Pagination (offset, limit - default 1000)
+
+### Card Query Parameters
+Supports filtering by:
+- Card token (`cardtoken`)
+- Card save name (`cardsavename`)
+- Customer ID (`customer`)
+- Card sharing group (`forgroup` - default 'no')
+- Date ranges (`start_date`, `end_date` in dd-MM-yyyy HH:mm format)
+- Dealer code (`dealercode`)
+- Initiator merchant business ID (`initiatormerchantbusinessid`)
+- Encrypted PAN (`encryptedpan`)
+- Pagination (offset, limit - default 1000)
+
+### Card Details Query Parameters
+Requires:
+- Session token (`sessiontoken` - required)
+
+Returns card count (cardCount, totalCardCount) and card list for the session.
+
+### Session Query Parameters
+Requires:
+- Session token (`sessiontoken` - required)
+
+Returns session, merchant, and customer information including status, amounts, currency, business details, and customer data.
 
 ## Important Implementation Notes
 
